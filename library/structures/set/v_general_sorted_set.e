@@ -32,7 +32,7 @@ feature {NONE} -- Initialization
 		do
 			order := o
 			create tree
-			create iterator.make (Current, tree)
+			-- create iterator.make (Current, tree) -- replaced with self-initializing attribute waiting Targeted expressions adoption
 		ensure
 			set_effect: set.is_empty
 			--- order_effect: order |=| o
@@ -191,6 +191,9 @@ feature {NONE} -- Implementation
 
 	iterator: V_SORTED_SET_ITERATOR [G]
 			-- Internal cursor.
+		attribute
+			create Result.make (Current, tree)
+		end
 
 feature -- Specification
 ---	is_total_order (o: PREDICATE [ANY, TUPLE [G, G]])
