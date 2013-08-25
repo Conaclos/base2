@@ -4,7 +4,7 @@ note
 			and with reference or object equality as equivalence relation.
 
 			When using reference equality with mutable elements,
-			consider inheriting elements from V_REFERENCE_HASHABLE. 			
+			consider inheriting elements from V_REFERENCE_HASHABLE.
 		]"
 	author: "Nadia Polikarpova"
 	model: set, equivalence, hash
@@ -48,12 +48,15 @@ feature {NONE} -- Initialization
 	default_create
 			-- Create an empty set with reference equality as equivalence relation.
 		do
-			make (agent reference_equal, agent hash_code)
+			-- make (agent reference_equal, agent hash_code) -- Waiting Targeted expressions adoption
+			make (agent (create {V_EQUALITY [G]}).reference_equal, agent (create {V_HASH [G]}).hash_code)
 		end
 
 	with_object_equality
 			-- Create an empty set with object equality as equivalence relation.
 		do
-			make (agent object_equal, agent hash_code)
+			-- make (agent object_equal, agent hash_code) -- Waiting Targeted expressions adoption
+			make (agent (create {V_EQUALITY [G]}).object_equal, agent (create {V_HASH [G]}).hash_code)
 		end
+
 end

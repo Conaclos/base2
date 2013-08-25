@@ -22,4 +22,5 @@ feature -- Basic operations
 		ensure
 			definition: Result = (x ~ y)
 		end
+
 end

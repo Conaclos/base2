@@ -16,6 +16,19 @@ inherit
 			copy
 		end
 
+inherit {NONE}
+	V_TABLE_UTILITY [K, V]
+		rename
+			keys_comparison as keys_order_according
+		export {NONE}
+			all
+		undefine
+			default_create,
+			out,
+			copy,
+			is_equal
+		end
+
 create
 	make
 
@@ -29,10 +42,11 @@ feature {NONE} -- Initialization
 			--- o_is_total_order: is_total_order (o)
 		do
 			key_order := o
-			create set.make (agent (kv1, kv2: TUPLE [key: K; value: V]; key_o: PREDICATE [ANY, TUPLE [K, K]]): BOOLEAN
-					do
-						Result := key_o.item ([kv1.key, kv2.key])
-					end (?, ?, o))
+--			create set.make (agent (kv1, kv2: TUPLE [key: K; value: V]; key_o: PREDICATE [ANY, TUPLE [K, K]]): BOOLEAN
+--					do
+--						Result := key_o.item ([kv1.key, kv2.key])
+--					end (?, ?, o))  -- Waiting Targeted expressions adoption
+			create set.make (agent (create {V_TABLE_UTILITY [K, V]}).keys_comparison (?, ?, o))
 		ensure
 			map_effect: map.is_empty
 			--- key_less_order_effect: key_less_order |=| o

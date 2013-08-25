@@ -61,4 +61,5 @@ feature -- Basic operations
 			definition_non_void: x /= Void and y /= Void implies Result = (x >= y)
 			definition_void: x = Void or y = Void implies Result = (y = Void)
 		end
+
 end

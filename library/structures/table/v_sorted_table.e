@@ -33,6 +33,7 @@ feature {NONE} -- Initialization
 	default_create
 			-- Create an empty set with reference equality as equivalence relation.
 		do
-			make (agent comparable_less_equal)
+			-- make (agent comparable_less_equal) -- Waiting Targeted expressions adoption
+			make (agent (create {V_ORDER [K]}).less_equal)
 		end
 end

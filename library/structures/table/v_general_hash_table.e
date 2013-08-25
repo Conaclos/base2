@@ -16,6 +16,19 @@ inherit
 			copy
 		end
 
+inherit {NONE}
+	V_TABLE_UTILITY [K, V]
+		rename
+			keys_comparison as keys_equal_according
+		export {NONE}
+			all
+		undefine
+			default_create,
+			out,
+			copy,
+			is_equal
+		end
+
 create
 	make
 
@@ -34,15 +47,19 @@ feature {NONE} -- Initialization
 		do
 			key_equivalence := eq
 			key_hash := h
+--			create set.make (
+--				agent (kv1, kv2: TUPLE [key: K; value: V]; key_eq: PREDICATE [ANY, TUPLE [K, K]]): BOOLEAN
+--					do
+--						Result := key_eq.item ([kv1.key, kv2.key])
+--					end (?, ?, eq),
+--				agent (kv: TUPLE [key: K; value: V]; key_h: FUNCTION [ANY, TUPLE [K], INTEGER]): INTEGER
+--					do
+--						Result := key_h.item ([kv.key])
+--					end (?, h))  -- Waiting Targeted expressions adoption
+
 			create set.make (
-				agent (kv1, kv2: TUPLE [key: K; value: V]; key_eq: PREDICATE [ANY, TUPLE [K, K]]): BOOLEAN
-					do
-						Result := key_eq.item ([kv1.key, kv2.key])
-					end (?, ?, eq),
-				agent (kv: TUPLE [key: K; value: V]; key_h: FUNCTION [ANY, TUPLE [K], INTEGER]): INTEGER
-					do
-						Result := key_h.item ([kv.key])
-					end (?, h))
+				agent (create {V_TABLE_UTILITY [K, V]}).keys_comparison (?, ?, eq),
+				agent (create {V_TABLE_UTILITY [K, V]}).key_hash_code_with (?, h))
 		ensure
 			map_effect: map.is_empty
 			--- key_equivalence_effect: key_equivalence |=| eq

@@ -20,4 +20,5 @@ feature -- Basic operations
 			definition_non_void: x /= Void implies Result = x.hash_code
 			definition_void: x = Void implies Result = 0
 		end
+
 end
