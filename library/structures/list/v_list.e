@@ -235,6 +235,13 @@ feature -- Removal
 			-- Remove all elements satisfying `pred'.
 		note
 			modify: sequence
+		require
+			pred_exists: pred /= Void
+			pred_has_one_arg: pred.open_count = 1
+			precondition_satisfied: map.range.for_all (agent (x: G; p: PREDICATE [ANY, TUPLE [G]]): BOOLEAN
+				do
+					Result := p.precondition ([x])
+				end (?, pred))
 		local
 			i: V_LIST_ITERATOR [G]
 		do
@@ -266,17 +273,16 @@ feature -- Specification
 			-- Sequence of list's elements.
 		note
 			status: specification
-		do
-			Result := new_cursor.sequence
+		deferred
 		ensure
 			exists: Result /= Void
 		end
 
 invariant
 	map_domain_definition: map.domain |=| sequence.domain
-	map_definition: map.domain.for_all (agent (i: INTEGER): BOOLEAN
+	map_definition: map.for_all (agent (i: INTEGER; x: G): BOOLEAN
 		do
-			Result := map [i] = sequence [i]
+			Result := x = sequence [i]
 		end)
 
 end

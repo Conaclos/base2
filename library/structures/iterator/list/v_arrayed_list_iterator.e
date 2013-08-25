@@ -15,6 +15,8 @@ inherit
 		end
 
 	V_INDEX_ITERATOR [G]
+		undefine
+			sequence
 		redefine
 			copy
 		end

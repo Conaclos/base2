@@ -347,6 +347,26 @@ feature {V_CONTAINER, V_ITERATOR} -- Implementation
 			end
 		end
 
+feature -- Specification
+
+	sequence: MML_SEQUENCE [G]
+			-- Sequence of elements.
+		note
+			status: specification
+		local
+			c: V_DOUBLY_LINKABLE [G]
+		do
+			create Result
+			from
+				c := first_cell
+			until
+				c = Void
+			loop
+				Result := Result & c.item
+				c := c.right
+			end
+		end
+
 invariant
 	first_cell_exists_in_nonempty: is_empty = (first_cell = Void)
 	last_cell_exists_in_nonempty: is_empty = (last_cell = Void)

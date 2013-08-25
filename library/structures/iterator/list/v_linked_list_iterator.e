@@ -288,26 +288,6 @@ feature {V_CELL_CURSOR} -- Implementation
 			Result := active_index > 0
 		end
 
-feature -- Specification
-
-	sequence: MML_SEQUENCE [G]
-			-- Sequence of elements	in `target'.
-		note
-			status: specification
-		local
-			c: V_LINKABLE [G]
-		do
-			create Result
-			from
-				c := target.first_cell
-			until
-				c = Void
-			loop
-				Result := Result & c.item
-				c := c.right
-			end
-		end
-
 invariant
 	after_definition: after = (index = sequence.count + 1)
 

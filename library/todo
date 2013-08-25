@@ -5,7 +5,6 @@ Structures:
 - Tree nodes should not have parent pointers? (less consistentcy problems,
 more sharing possible)
 - Do not rely on agents in standard sorted and hash structures
-- Set/table with no requirements on elements/keys
 - Finite streams: filter, mapper, folder
 - Extender iterator
 - V_STRING, V_MUTABLE_STRING

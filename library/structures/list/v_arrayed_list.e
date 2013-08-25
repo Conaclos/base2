@@ -266,6 +266,26 @@ feature {NONE} -- Implementation
 			end
 		end
 
+feature -- Specification
+
+	sequence: MML_SEQUENCE [G]
+			-- Sequence of elements.
+		note
+			status: specification
+		local
+			i: INTEGER
+		do
+			create Result
+			from
+				i := lower
+			until
+				i > upper
+			loop
+				Result := Result & item (i)
+				i := i + 1
+			end
+		end
+
 invariant
 	array_exists: array /= Void
 	array_non_empty: capacity > 0

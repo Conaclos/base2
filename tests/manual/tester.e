@@ -12,13 +12,13 @@ create
 feature {NONE} -- Initialization
 	execute
 			-- Run application.
-		local
-			constant_input: V_CONSTANT_INPUT [INTEGER]
-			string_input: V_STRING_INPUT [INTEGER]
 		do
---			print ("%NTest MML_SET%N")
---			test_mml_set
---			io.new_line
+			test_optimization
+			print ("%NTest MML_SET%N")
+			test_mml_set
+			print ("%NTest MML_RELATION%N")
+			test_mml_relation
+			io.new_line
 			print ("%NTest ARRAY%N")
 			test_array
 			io.new_line
@@ -845,14 +845,62 @@ feature -- MML tests
 			s3 := s1 ^ s2
 		end
 
+	test_mml_relation
+			-- Test MML_RELATION
+		local
+			r: MML_RELATION [INTEGER, INTEGER]
+			b: BOOLEAN
+		do
+			create r.singleton (1, 2)
+			r := r.extended (2, 3).extended (1, 4).extended (1, 2)
+			check r.has (1, 4) end
+			check not r.has (1, 3) end
+			check r.count = 3 end
+		end
+
 feature -- Performance tests
+	test_optimization
+			-- Test MBC optimazation performance
+		local
+			start, finish, dur: TIME
+			i, n: INTEGER
+		do
+			n := 100
+			create start.make_now
+			from
+				i := 1
+			until
+				i > n
+			loop
+				v_linked_list_performance
+				i := i + 1
+			end
+			create finish.make_now
+			io.new_line
+			print (finish.relative_duration (start))
+--			io.new_line
+--			create start.make_now
+--			from
+--				i := 1
+--			until
+--				i > n
+--			loop
+--				v_linked_list_performance
+--				i := i + 1
+--			end
+--			create finish.make_now
+--			io.new_line
+--			print (finish.relative_duration (start).fine_second)
+--			io.read_character
+		end
+
 	test_performance
 			-- Test V_LINKED_LIST against LINKED_LIST
 		local
 			start, finish: TIME
 			i, n: INTEGER
 		do
-			n := 10_000
+			n := 100
 			create start.make_now
 			from
 				i := 1
@@ -992,6 +1040,7 @@ feature -- Performance tests
 			l1.remove
 			l1.wipe_out
 		end
+
 feature -- Implementation
 	cout: V_STANDARD_OUTPUT
 			-- Standard output stream

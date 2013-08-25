@@ -118,6 +118,16 @@ feature -- Removal
 			sequence_effect: sequence |=| old sequence.removed_at (index + 1)
 		end
 
+feature -- Specification
+
+	sequence: MML_SEQUENCE [G]
+			-- Sequence of elements	in `target'.
+		note
+			status: specification
+		do
+			Result := target.sequence
+		end
+
 invariant
 	sequence_definition: sequence |=| target.sequence
 end
