@@ -22,8 +22,8 @@ feature {NONE} -- Initialization
 		require
 			s_exists: s /= Void
 		do
-			target := s
 			create list_iterator.make (create {V_LINKED_LIST [G]})
+			target := s
 		ensure
 			target_effect: target = s
 			index_effect: index = 0
