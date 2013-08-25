@@ -81,8 +81,8 @@ feature -- Replacement
 			end
 		ensure
 			map_domain_effect: map.domain |=| old map.domain
-			map_changed_effect: (map | {MML_INTERVAL}[[l, u]]).is_constant (v)
-			map_unchanged_effect: (map | (map.domain - {MML_INTERVAL}[[l, u]])) |=| old (map | (map.domain - {MML_INTERVAL}[[l, u]]))
+			map_changed_effect: (map | (create {MML_INTERVAL}.from_tuple ([l, u]))).is_constant (v)
+			map_unchanged_effect: (map | (map.domain - (create {MML_INTERVAL}.from_tuple ([l, u])))) |=| old (map | (map.domain - ( create {MML_INTERVAL}.from_tuple ([l, u]))))
 		end
 
 	clear (l, u: INTEGER)
@@ -97,8 +97,8 @@ feature -- Replacement
 			fill (({G}).default, l, u)
 		ensure
 			map_domain_effect: map.domain |=| old map.domain
-			map_changed_effect: (map | {MML_INTERVAL}[[l, u]]).is_constant (({G}).default)
-			map_unchanged_effect: (map | (map.domain - {MML_INTERVAL}[[l, u]])) |=| old (map | (map.domain - {MML_INTERVAL}[[l, u]]))
+			map_changed_effect: (map | (create {MML_INTERVAL}.from_tuple ([l, u]))).is_constant (({G}).default)
+			map_unchanged_effect: (map | (map.domain - (create {MML_INTERVAL}.from_tuple ([l, u])))) |=| old (map | (map.domain - (create {MML_INTERVAL}.from_tuple ([l, u]))))
 		end
 
 	copy_range (other: V_SEQUENCE [G]; other_first, other_last, index: INTEGER)
@@ -132,13 +132,13 @@ feature -- Replacement
 			end
 		ensure
 			map_domain_effect: map.domain |=| old map.domain
-			map_changed_effect: {MML_INTERVAL} [[index, index + other_last - other_first]].for_all (
+			map_changed_effect: (create {MML_INTERVAL}.from_tuple ([index, index + other_last - other_first])).for_all (
 				agent (i: INTEGER; other_map: MML_MAP [INTEGER, G]; f, of: INTEGER): BOOLEAN
 					do
 						Result := map [i] = other_map [i - f + of]
 					end (?, old other.map, index, other_first))
-			map_unchanged_effect: (map | (map.domain - {MML_INTERVAL} [[index, index + other_last - other_first]])) |=|
-				old (map | (map.domain - {MML_INTERVAL} [[index, index + other_last - other_first]]))
+			map_unchanged_effect: (map | (map.domain - (create {MML_INTERVAL}.from_tuple ([index, index + other_last - other_first])))) |=|
+				old (map | (map.domain - (map.domain - (create {MML_INTERVAL}.from_tuple ([index, index + other_last - other_first])))))
 		end
 
 	sort (order: PREDICATE [ANY, TUPLE [G, G]])
@@ -235,4 +235,5 @@ feature {NONE} -- Implementation
 				quick_sort (pivot + 1, right, order)
 			end
 		end
+
 end

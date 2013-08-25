@@ -55,7 +55,7 @@ feature -- Status report
 	is_first: BOOLEAN
 			-- Is cursor at the first position?
 		local
-			old_active: V_BINARY_TREE_CELL [G]
+			old_active: like active
 			old_after: BOOLEAN
 		do
 			if not target.is_empty then
@@ -71,7 +71,7 @@ feature -- Status report
 	is_last: BOOLEAN
 			-- Is cursor at the last position?
 		local
-			old_active: V_BINARY_TREE_CELL [G]
+			old_active: like active
 			old_after: BOOLEAN
 		do
 			if not target.is_empty then
@@ -148,7 +148,7 @@ feature {NONE} -- Implementation
 		require
 			active_exists: active /= Void
 		local
-			old_active: V_BINARY_TREE_CELL [G]
+			old_active: like active
 			old_after: BOOLEAN
 		do
 			old_active := active
@@ -177,7 +177,7 @@ feature -- Specification
 		note
 			status: specification
 		local
-			old_active: V_BINARY_TREE_CELL [G]
+			old_active: like active
 			old_after: BOOLEAN
 		do
 			old_active := active

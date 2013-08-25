@@ -125,9 +125,9 @@ feature -- Search
 				Result := j
 			end
 		ensure
-			definition_not_has: not (map | {MML_INTERVAL} [[i, upper]]).has (v) implies not map.domain [Result]
-			definition_has: (map | {MML_INTERVAL} [[i, upper]]).has (v) implies
-				Result = (map | {MML_INTERVAL} [[i, upper]]).inverse.image_of (v).extremum (agent less_equal)
+			definition_not_has: not (map | (create {MML_INTERVAL}.from_tuple ([i, upper]))).has (v) implies not map.domain [Result]
+			definition_has: (map | (create {MML_INTERVAL}.from_tuple ([i, upper]))).has (v) implies
+				Result = (map | (create {MML_INTERVAL}.from_tuple ([i, upper]))).inverse.image_of (v).extremum (agent less_equal)
 		end
 
 	index_satisfying (pred: PREDICATE [ANY, TUPLE [G]]): INTEGER
@@ -178,9 +178,9 @@ feature -- Search
 				Result := j
 			end
 		ensure
-			definition_not_has: not (map | {MML_INTERVAL} [[i, upper]]).range.exists (pred) implies not map.domain [Result]
-			definition_has: (map | {MML_INTERVAL} [[i, upper]]).range.exists (pred) implies
-				Result = (map | {MML_INTERVAL} [[i, upper]]).inverse.image (map.range | pred).extremum (agent less_equal)
+			definition_not_has: not (map | (create {MML_INTERVAL}.from_tuple ([i, upper]))).range.exists (pred) implies not map.domain [Result]
+			definition_has: (map | (create {MML_INTERVAL}.from_tuple ([i, upper]))).range.exists (pred) implies
+				Result = (map | (create {MML_INTERVAL}.from_tuple ([i, upper]))).inverse.image (map.range | pred).extremum (agent less_equal)
 		end
 
 	key_equivalence: PREDICATE [ANY, TUPLE [INTEGER, INTEGER]]
@@ -251,6 +251,6 @@ feature -- Specification
 ---		end		
 
 invariant
-	indexes_in_interval: map.domain |=| {MML_INTERVAL} [[lower, upper]]
+	indexes_in_interval: map.domain |=| (create {MML_INTERVAL}.from_tuple ([lower, upper]))
 	--- key_equivalence_definition: key_equivalence |=| agent reference_equal
 end

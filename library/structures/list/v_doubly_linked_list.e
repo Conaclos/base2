@@ -102,7 +102,7 @@ feature -- Replacement
 		note
 			modify: sequence
 		local
-			rest, next: V_DOUBLY_LINKABLE [G]
+			rest, next: detachable V_DOUBLY_LINKABLE [G]
 		do
 			from
 				last_cell := first_cell
@@ -127,10 +127,10 @@ feature -- Extension
 			cell: V_DOUBLY_LINKABLE [G]
 		do
 			create cell.put (v)
-			if is_empty then
-				last_cell := cell
+			if attached first_cell as l_first then
+				cell.connect (l_first)
 			else
-				cell.connect (first_cell)
+				last_cell := cell
 			end
 			first_cell := cell
 			count := count + 1
@@ -249,10 +249,10 @@ feature -- Removal
 
 feature {V_CONTAINER, V_ITERATOR} -- Implementation
 
-	first_cell: V_DOUBLY_LINKABLE [G]
+	first_cell: detachable V_DOUBLY_LINKABLE [G]
 			-- First cell of the list.
 
-	last_cell: V_DOUBLY_LINKABLE [G]
+	last_cell: detachable V_DOUBLY_LINKABLE [G]
 			-- Last cell of the list.
 
 	cell_at (i: INTEGER): V_DOUBLY_LINKABLE [G]
@@ -265,21 +265,29 @@ feature {V_CONTAINER, V_ITERATOR} -- Implementation
 			if i <= count // 2 then
 				from
 					j := 1
-					Result := first_cell
+					check attached first_cell as l_first then
+						Result := l_first
+					end
 				until
 					j = i
 				loop
-					Result := Result.right
+					check attached  Result.right as l_right then
+						Result := l_right
+					end
 					j := j + 1
 				end
 			else
 				from
 					j := count
-					Result := last_cell
+					check attached last_cell as l_last then
+						Result := l_last
+					end
 				until
 					j = i
 				loop
-					Result := Result.left
+					check attached Result.left as l_left then
+						Result := l_left
+					end
 					j := j - 1
 				end
 			end
@@ -293,10 +301,10 @@ feature {V_CONTAINER, V_ITERATOR} -- Implementation
 			new: V_DOUBLY_LINKABLE [G]
 		do
 			create new.put (v)
-			if c.right = Void then
-				last_cell := new
+			if attached c.right as c_right then
+				new.connect (c_right)
 			else
-				new.connect (c.right)
+				last_cell := new
 			end
 			c.connect (new)
 			count := count + 1
@@ -317,32 +325,30 @@ feature {V_CONTAINER, V_ITERATOR} -- Implementation
 			count := count - 1
 		end
 
-	merge_after (other: V_DOUBLY_LINKED_LIST [G]; c: V_DOUBLY_LINKABLE [G])
+	merge_after (other: V_DOUBLY_LINKED_LIST [G]; c: detachable V_DOUBLY_LINKABLE [G])
 			-- Merge `other' into `Current' after cell `c'. If `c' is `Void', merge to the front.
 		require
 			other_exists: other /= Void
-		local
-			other_first, other_last: V_DOUBLY_LINKABLE [G]
 		do
 			if not other.is_empty then
-				other_first := other.first_cell
-				other_last := other.last_cell
-				count := count + other.count
-				other.wipe_out
-				if c = Void then
-					if first_cell = Void then
-						last_cell := other_last
+				check attached other.first_cell as other_first and attached other.last_cell as other_last then
+					count := count + other.count
+					other.wipe_out
+					if c = Void then
+						if attached first_cell as l_first then
+							other_last.connect (l_first)
+						else
+							last_cell := other_last
+						end
+						first_cell := other_first
 					else
-						other_last.connect (first_cell)
+						if attached c.right as c_right then
+							other_last.connect (c_right)
+						else
+							last_cell := other_last
+						end
+						c.connect (other_first)
 					end
-					first_cell := other_first
-				else
-					if c.right = Void then
-						last_cell := other_last
-					else
-						other_last.connect (c.right)
-					end
-					c.connect (other_first)
 				end
 			end
 		end
@@ -354,7 +360,7 @@ feature -- Specification
 		note
 			status: specification
 		local
-			c: V_DOUBLY_LINKABLE [G]
+			c: detachable V_DOUBLY_LINKABLE [G]
 		do
 			create Result
 			from

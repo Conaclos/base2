@@ -174,7 +174,7 @@ feature -- Cursor movement
 			-- Move to an element equivalent to `v'.
 			-- (Use `target.equivalence'.)
 		local
-			c: V_BINARY_TREE_CELL [G]
+			c: detachable V_BINARY_TREE_CELL [G]
 		do
 			c := target.cell_equivalent (v)
 			if c = Void then

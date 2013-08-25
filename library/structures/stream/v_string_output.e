@@ -7,7 +7,7 @@ class
 	V_STRING_OUTPUT
 
 inherit
-	V_OUTPUT_STREAM [ANY]
+	V_OUTPUT_STREAM [detachable ANY]
 
 create
 	make,
@@ -62,7 +62,7 @@ feature -- Status report
 
 feature -- Replacement
 
-	output (v: ANY)
+	output (v: detachable ANY)
 			-- Put `v' into the stream and move to the next position.
 		note
 			modify: destination

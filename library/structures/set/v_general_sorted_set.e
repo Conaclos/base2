@@ -171,7 +171,7 @@ feature {V_CONTAINER, V_ITERATOR} -- Implementation
 			-- Element storage.
 			-- Should not be reassigned after creation.
 
-	cell_equivalent (v: G): V_BINARY_TREE_CELL [G]
+	cell_equivalent (v: G): detachable V_BINARY_TREE_CELL [G]
 			-- Tree cell where item is equivalent to `v'.
 		do
 			from

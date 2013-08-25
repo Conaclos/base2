@@ -196,7 +196,9 @@ feature -- Extension
 	extend_right (v: G)
 			-- Insert `v' to the right of current position. Do not move cursor.
 		do
-			target.extend_after (v, active)
+			check attached active as l_active then
+				target.extend_after (v, l_active)
+			end
 		end
 
 	insert_left (other: V_ITERATOR [G])
@@ -268,12 +270,14 @@ feature -- Removal
 	remove_right
 			-- Remove element to the right of current position. Do not move cursor.
 		do
-			target.remove_after (active)
+			check attached active as l_active then
+				target.remove_after (l_active)
+			end
 		end
 
 feature {V_CELL_CURSOR} -- Implementation
 
-	active: V_DOUBLY_LINKABLE [G]
+	active: detachable V_DOUBLY_LINKABLE [G]
 			-- Cell at current position.
 			-- If unreachable from `target.first_cell' iterator is considered `before'.					
 
@@ -283,7 +287,7 @@ feature {V_CELL_CURSOR} -- Implementation
 		require
 			active_exists: active /= Void
 		local
-			cf, cb: V_DOUBLY_LINKABLE [G]
+			cf, cb: detachable V_DOUBLY_LINKABLE [G]
 			i, j: INTEGER
 		do
 			from

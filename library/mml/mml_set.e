@@ -19,7 +19,7 @@ create {MML_MODEL}
 	make_from_array
 
 convert
-	singleton ({G})
+	singleton ({attached G})
 
 feature {NONE} -- Initialization
 

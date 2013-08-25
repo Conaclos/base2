@@ -9,16 +9,20 @@ feature -- Comparison
 
 	is_model_equal alias "|=|" (other: MML_MODEL): BOOLEAN
 			-- Is this model mathematically equal to `other'?
+		require
+			other_exists: other /= Void
 		deferred
 		end
 
 	is_model_non_equal alias "|/=|" (other: MML_MODEL): BOOLEAN
 			-- Is this model mathematically equal to `other'?
+		require
+			other_exists: other /= Void
 		do
 			Result := not is_model_equal (other)
 		end
 
-	frozen model_equals (v1, v2: ANY): BOOLEAN
+	frozen model_equals (v1, v2: detachable ANY): BOOLEAN
 			-- Are `v1' and `v2' mathematically equal?
 			-- If they are models use model equality, otherwise reference equality.
 		do

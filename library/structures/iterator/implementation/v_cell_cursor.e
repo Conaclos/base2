@@ -44,7 +44,7 @@ feature -- Replacement
 
 feature {V_CELL_CURSOR} -- Implementation
 
-	active: V_CELL [G]
+	active: detachable V_CELL [G]
 			-- Cell at current position.
 		deferred
 		end

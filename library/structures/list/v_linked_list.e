@@ -116,7 +116,7 @@ feature -- Replacement
 		note
 			modify: sequence
 		local
-			rest, next: V_LINKABLE [G]
+			rest, next: detachable V_LINKABLE [G]
 		do
 			from
 				last_cell := first_cell
@@ -260,10 +260,10 @@ feature -- Removal
 
 feature {V_CONTAINER, V_ITERATOR} -- Implementation
 
-	first_cell: V_LINKABLE [G]
+	first_cell: detachable V_LINKABLE [G]
 			-- First cell of the list.
 
-	last_cell: V_LINKABLE [G]
+	last_cell: detachable V_LINKABLE [G]
 			-- Last cell of the list.
 
 	cell_at (i: INTEGER): V_LINKABLE [G]
@@ -275,16 +275,20 @@ feature {V_CONTAINER, V_ITERATOR} -- Implementation
 		do
 			from
 				j := 1
-				Result := first_cell
+				check attached first_cell as l_first then
+					Result := l_first
+				end
 			until
 				j = i
 			loop
-				Result := Result.right
+				check attached Result.right as l_right then
+					Result := l_right
+				end
 				j := j + 1
 			end
 		end
 
-	cell_satisfying (pred: PREDICATE [ANY, TUPLE [G]]): V_LINKABLE [G]
+	cell_satisfying (pred: PREDICATE [ANY, TUPLE [G]]): detachable V_LINKABLE [G]
 			-- Cell where item satisfies `pred'.
 		do
 			from
@@ -326,12 +330,13 @@ feature {V_CONTAINER, V_ITERATOR} -- Implementation
 			count := count - 1
 		end
 
-	merge_after (other: V_LINKED_LIST [G]; c: V_LINKABLE [G])
+	merge_after (other: V_LINKED_LIST [G]; c: detachable V_LINKABLE [G])
 			-- Merge `other' into `Current' after cell `c'. If `c' is `Void', merge to the front.
 		require
 			other_exists: other /= Void
 		local
-			other_first, other_last: V_LINKABLE [G]
+			other_first: like first_cell
+			other_last: like last_cell
 		do
 			if not other.is_empty then
 				other_first := other.first_cell
@@ -363,7 +368,7 @@ feature -- Specification
 		note
 			status: specification
 		local
-			c: V_LINKABLE [G]
+			c: detachable V_LINKABLE [G]
 		do
 			create Result
 			from

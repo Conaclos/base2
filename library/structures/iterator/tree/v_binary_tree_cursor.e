@@ -56,7 +56,7 @@ feature -- Status report
 		do
 			Result := active /= Void and active = target.root
 		ensure
-			definition: Result = (path |=| {MML_SEQUENCE [BOOLEAN]} [True])
+			definition: Result = (path |=| (create {MML_SEQUENCE [BOOLEAN]}.singleton (True)))
 		end
 
 	is_leaf: BOOLEAN
@@ -147,7 +147,7 @@ feature -- Cursor movement
 		do
 			active := target.root
 		ensure
-			path_effect_non_empty: not map.is_empty implies path |=| {MML_SEQUENCE [BOOLEAN]} [True]
+			path_effect_non_empty: not map.is_empty implies path |=| (create {MML_SEQUENCE [BOOLEAN]}.singleton (True))
 			path_effect_empty: map.is_empty implies path.is_empty
 		end
 
@@ -161,7 +161,9 @@ feature -- Extension
 			not_off: not off
 			not_has_left: not has_left
 		do
-			target.extend_left (v, active)
+			check attached active as l_active then
+				target.extend_left (v, l_active)
+			end
 		ensure
 			map_effect: map |=| old map.updated (path & False, v)
 		end
@@ -174,7 +176,9 @@ feature -- Extension
 			not_off: not off
 			not_has_right: not has_right
 		do
-			target.extend_right (v, active)
+			check attached active as l_active then
+				target.extend_right (v, l_active)
+			end
 		ensure
 			map_effect: map |=| old map.updated (path & True, v)
 		end
@@ -189,7 +193,9 @@ feature -- Removal
 			not_off: not off
 			not_two_children: not has_left or not has_right
 		do
-			target.remove (active)
+			check attached active as l_active then
+				target.remove (l_active)
+			end
 			active := Void
 		ensure
 			map_domain_effect: map.domain |=| old (
@@ -206,7 +212,7 @@ feature -- Removal
 
 feature {V_CELL_CURSOR, V_ITERATOR} -- Implementation
 
-	active: V_BINARY_TREE_CELL [G]
+	active: detachable V_BINARY_TREE_CELL [G]
 			-- Cell at current position.
 
 feature {NONE} -- Implementation
@@ -217,7 +223,7 @@ feature {NONE} -- Implementation
 			Result := reachable_from (target.root)
 		end
 
-	reachable_from (c: V_BINARY_TREE_CELL [G]): BOOLEAN
+	reachable_from (c: detachable V_BINARY_TREE_CELL [G]): BOOLEAN
 			-- Is `active' in subtree with root `c'?
 		do
 			if c = active then
@@ -234,7 +240,7 @@ feature -- Specification
 		note
 			status: specification
 		local
-			cell: V_BINARY_TREE_CELL [G]
+			cell: detachable V_BINARY_TREE_CELL [G]
 		do
 			create Result
 			if not off then
