@@ -9,6 +9,9 @@ class
 inherit
 	V_INPUT_STREAM [G]
 
+create
+	make
+
 feature {NONE} -- Initialization
 
 	make (v: G)
@@ -40,5 +43,4 @@ feature -- Cursor movement
 
 invariant
 	box_definition: box |=| create {MML_SET [G]}.singleton (item)
-
 end

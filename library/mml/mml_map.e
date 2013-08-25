@@ -104,9 +104,7 @@ feature -- Elements
 			i: INTEGER
 		do
 			i := keys.index_satisfying (agent meq_key (k, ?))
-			if keys.has_index (i) then
-				Result := values [i]
-			end
+			Result := values [i]
 		end
 
 feature -- Conversion

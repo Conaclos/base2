@@ -82,10 +82,8 @@ feature -- Elements
 		require
 			not_empty: not is_empty
 		do
-			if not is_empty then
-				-- Workaround for semistrict postconditions
-				Result := array [1]
-			end
+			-- Workaround for semistrict postconditions
+			Result := array [1]
 		ensure
 			element: has (Result)
 		end
@@ -101,19 +99,17 @@ feature -- Elements
 		local
 			i: INTEGER
 		do
-			if not is_empty then
-				-- Workaround for semistrict postconditions
-				from
-					Result := array.first
-					i := 2
-				until
-					i > array.count
-				loop
-					if order.item ([array [i], Result]) then
-						Result := array [i]
-					end
-					i := i + 1
+			-- Workaround for semistrict postconditions
+			from
+				Result := array.first
+				i := 2
+			until
+				i > array.count
+			loop
+				if order.item ([array [i], Result]) then
+					Result := array [i]
 				end
+				i := i + 1
 			end
 		ensure
 			element: has (Result)

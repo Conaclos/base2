@@ -68,7 +68,7 @@ feature -- Initialization
 			from_string := other.from_string
 			is_separator := other.is_separator
 			index := other.index
-			item := other.item
+			item_implementation := other.item_implementation
 			next := other.next
 		ensure then
 			source_effect: source ~ other.source
@@ -81,6 +81,11 @@ feature -- Access
 
 	item: G
 			-- Current token.
+		do
+			check attached item_implementation as l_item then
+				Result := l_item
+			end
+		end
 
 	source: STRING
 			-- Source string remained to be read.
@@ -160,6 +165,9 @@ feature -- Cursor movement
 
 feature {V_STRING_INPUT} -- Implementation
 
+	item_implementation: detachable like item
+			-- Potential current item
+
 	next: INTEGER
 			-- Position of the first character of next token in `source'.
 
@@ -195,7 +203,7 @@ feature {NONE} -- Implementation
 			if not from_string.precondition ([s]) then
 				index := source.count + 1
 			else
-				item := from_string.item ([s])
+				item_implementation := from_string.item ([s])
 				index := i
 			end
 		end
@@ -229,4 +237,5 @@ invariant
 		box.any_item ~ from_string.item ([source.substring (index, index_satisfying_from (source, is_separator, index) - 1)])
 	--- is_separator_is_total: is_separator.precondition |=| True
 	item_definition: not box.is_empty implies item = box.any_item
+	item_implementation_definition: not off = attached item_implementation
 end

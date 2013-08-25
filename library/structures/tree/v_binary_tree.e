@@ -179,7 +179,7 @@ feature {V_BINARY_TREE_CURSOR} -- Implementation
 
 feature {NONE} -- Implementation
 
-	subtree_twin (cell: detachable V_BINARY_TREE_CELL [G]): V_BINARY_TREE_CELL [G]
+	subtree_twin (cell: detachable V_BINARY_TREE_CELL [G]): detachable V_BINARY_TREE_CELL [G]
 			-- Copy of subtree with root `cell'.
 		do
 			if cell /= Void then
