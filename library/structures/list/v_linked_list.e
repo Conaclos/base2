@@ -64,13 +64,17 @@ feature -- Access
 	first: G
 			-- First element.
 		do
-			Result := first_cell.item
+			check attached first_cell as l_first then
+				Result := l_first.item
+			end
 		end
 
 	last: G
 			-- Last element.
 		do
-			Result := last_cell.item
+			check attached last_cell as l_last then
+				Result := l_last.item
+			end
 		end
 
 feature -- Measurement
@@ -155,10 +159,10 @@ feature -- Extension
 			cell: V_LINKABLE [G]
 		do
 			create cell.put (v)
-			if is_empty then
-				first_cell := cell
+			if attached last_cell as l_last then
+				l_last.put_right (cell)
 			else
-				last_cell.put_right (cell)
+				first_cell := cell
 			end
 			last_cell := cell
 			count := count + 1
@@ -224,7 +228,9 @@ feature -- Removal
 			if count = 1 then
 				last_cell := Void
 			end
-			first_cell := first_cell.right
+			check attached first_cell as l_first then
+				first_cell := l_first.right
+			end
 			count := count - 1
 		end
 
@@ -321,9 +327,11 @@ feature {V_CONTAINER, V_ITERATOR} -- Implementation
 			-- Remove the cell to the right of `c'.
 		require
 			c_exists: c /= Void
-			c_right_exists: c.right /= Void
+			c_right_exists: attached c.right
 		do
-			c.put_right (c.right.right)
+			check attached c.right as l_c_right then
+				c.put_right (l_c_right.right)
+			end
 			if c.right = Void then
 				last_cell := c
 			end
@@ -334,29 +342,26 @@ feature {V_CONTAINER, V_ITERATOR} -- Implementation
 			-- Merge `other' into `Current' after cell `c'. If `c' is `Void', merge to the front.
 		require
 			other_exists: other /= Void
-		local
-			other_first: like first_cell
-			other_last: like last_cell
 		do
 			if not other.is_empty then
-				other_first := other.first_cell
-				other_last := other.last_cell
-				count := count + other.count
-				other.wipe_out
-				if c = Void then
-					if first_cell = Void then
-						last_cell := other_last
+				check attached other.first_cell as other_first and attached other.last_cell as other_last then
+					count := count + other.count
+					other.wipe_out
+					if c = Void then
+						if first_cell = Void then
+							last_cell := other_last
+						else
+							other_last.put_right (first_cell)
+						end
+						first_cell := other_first
 					else
-						other_last.put_right (first_cell)
+						if c.right = Void then
+							last_cell := other_last
+						else
+							other_last.put_right (c.right)
+						end
+						c.put_right (other_first)
 					end
-					first_cell := other_first
-				else
-					if c.right = Void then
-						last_cell := other_last
-					else
-						other_last.put_right (c.right)
-					end
-					c.put_right (other_first)
 				end
 			end
 		end

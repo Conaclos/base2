@@ -58,13 +58,17 @@ feature -- Access
 	first: G
 			-- First element.
 		do
-			Result := first_cell.item
+			check attached first_cell as l_first then
+				Result := l_first.item
+			end
 		end
 
 	last: G
 			-- Last element.
 		do
-			Result := last_cell.item
+			check attached last_cell as l_last then
+				Result := l_last.item
+			end
 		end
 
 feature -- Measurement
@@ -142,10 +146,10 @@ feature -- Extension
 			cell: V_DOUBLY_LINKABLE [G]
 		do
 			create cell.put (v)
-			if is_empty then
-				first_cell := cell
+			if attached last_cell as l_last then
+				l_last.connect (cell)
 			else
-				last_cell.connect (cell)
+				first_cell := cell
 			end
 			last_cell := cell
 			count := count + 1
@@ -208,24 +212,30 @@ feature -- Removal
 	remove_front
 			-- Remove first element.
 		do
-			if count = 1 then
-				last_cell := Void
-			else
-				first_cell.right.put_left (Void)
+			check attached first_cell as l_first then
+				if attached l_first.right as l_first_right then
+					l_first_right.put_left (Void)
+				else
+					check count = 1 end
+					last_cell := Void
+				end
+				first_cell := l_first.right
 			end
-			first_cell := first_cell.right
 			count := count - 1
 		end
 
 	remove_back
 			-- Remove last element.
 		do
-			if count = 1 then
-				first_cell := Void
-			else
-				last_cell.left.put_right (Void)
+			check attached last_cell as l_last then
+				if attached l_last.left as l_last_left then
+					l_last_left.put_right (Void)
+				else
+					check count = 1 end
+					first_cell := Void
+				end
+				last_cell := l_last.left
 			end
-			last_cell := last_cell.left
 			count := count - 1
 		end
 
@@ -316,11 +326,13 @@ feature {V_CONTAINER, V_ITERATOR} -- Implementation
 			c_exists: c /= Void
 			c_right_exists: c.right /= Void
 		do
-			c.put_right (c.right.right)
-			if c.right = Void then
-				last_cell := c
+			check attached c.right as l_c_right then
+				c.put_right (l_c_right.right)
+			end
+			if attached c.right as l_c_right then
+				l_c_right.put_left (c)
 			else
-				c.right.put_left (c)
+				last_cell := c
 			end
 			count := count - 1
 		end

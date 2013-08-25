@@ -47,17 +47,17 @@ feature -- Status report
 	is_left: BOOLEAN
 			-- Is the left child of its parent?
 		do
-			Result := (not is_root and then parent.left = Current)
+			Result := (attached parent as l_parent and then l_parent.left = Current)
 		ensure
-			definition: Result = (parent /= Void and then parent.left = Current)
+			definition: Result = (attached parent as le_parent and then le_parent.left = Current)
 		end
 
 	is_right: BOOLEAN
 			-- Is the right child of its parent?
 		do
-			Result := (not is_root and then parent.right = Current)
+			Result := (attached parent as l_parent and then l_parent.right = Current)
 		ensure
-			definition: Result = (parent /= Void and then parent.right = Current)
+			definition: Result = (attached parent as le_parent and then le_parent.right = Current)
 		end
 
 feature -- Replacement

@@ -120,7 +120,7 @@ feature -- Cursor movement
 	forth
 			-- Move one position forward.
 		do
-			active := active.right
+			active := attached_active.right
 			if active = Void then
 				after := True
 			end
@@ -129,7 +129,7 @@ feature -- Cursor movement
 	back
 			-- Go one position backwards.
 		do
-			active := active.left
+			active := attached_active.left
 		end
 
 	go_before
@@ -196,9 +196,7 @@ feature -- Extension
 	extend_right (v: G)
 			-- Insert `v' to the right of current position. Do not move cursor.
 		do
-			check attached active as l_active then
-				target.extend_after (v, l_active)
-			end
+			target.extend_after (v, attached_active)
 		end
 
 	insert_left (other: V_ITERATOR [G])
@@ -270,9 +268,7 @@ feature -- Removal
 	remove_right
 			-- Remove element to the right of current position. Do not move cursor.
 		do
-			check attached active as l_active then
-				target.remove_after (l_active)
-			end
+			target.remove_after (attached_active)
 		end
 
 feature {V_CELL_CURSOR} -- Implementation
@@ -300,8 +296,10 @@ feature {V_CELL_CURSOR} -- Implementation
 			loop
 				i := i + 1
 				j := j - 1
-				cf := cf.right
-				cb := cb.left
+				check attached cf as al_cf and attached cb as al_cb then
+					cf := al_cf.right
+					cb := al_cb.left
+				end
 			end
 			if cf = active then
 				Result := i

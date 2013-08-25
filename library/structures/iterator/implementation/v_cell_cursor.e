@@ -13,7 +13,7 @@ feature -- Access
 		require
 			not_off: not off
 		do
-			Result := active.item
+			Result := attached_active.item
 		ensure
 			defintion: Result = box.any_item
 		end
@@ -37,7 +37,7 @@ feature -- Replacement
 		require
 			not_off: not off
 		do
-			active.put (v)
+			attached_active.put (v)
 		ensure
 			box_effect: box.any_item = v
 		end
@@ -47,6 +47,16 @@ feature {V_CELL_CURSOR} -- Implementation
 	active: detachable V_CELL [G]
 			-- Cell at current position.
 		deferred
+		end
+
+	attached_active: attached like active
+			-- Cell at current position.
+		require
+			not_off: not off
+		do
+			check attached active as l_active then
+				Result := l_active
+			end
 		end
 
 	reachable: BOOLEAN

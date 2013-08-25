@@ -31,9 +31,9 @@ feature -- Cursor movement
 				from
 					go_root
 				until
-					active.is_leaf
+					attached_active.is_leaf
 				loop
-					if active.right /= Void then
+					if attached_active.right /= Void then
 						right
 					else
 						left
@@ -50,10 +50,10 @@ feature -- Cursor movement
 		note
 			modify: path, after
 		do
-			if active.is_leaf then
+			if attached_active.is_leaf then
 				from
 				until
-					(active = Void) or else (active.is_left and active.parent.right /= Void)
+					active = Void or else (attached_active.is_left and attached_parent.right /= Void)
 				loop
 					up
 				end
@@ -61,7 +61,7 @@ feature -- Cursor movement
 					up
 					right
 				end
-			elseif active.left /= Void then
+			elseif attached_active.left /= Void then
 				left
 			else
 				right
@@ -76,14 +76,14 @@ feature -- Cursor movement
 		note
 			modify: path, after
 		do
-			if active.is_right and then active.parent.left /= Void then
+			if attached_active.is_right and then attached_parent.left /= Void then
 				up
 				left
 				from
 				until
-					active.is_leaf
+					attached_active.is_leaf
 				loop
-					if active.right /= Void then
+					if attached_active.right /= Void then
 						right
 					else
 						left

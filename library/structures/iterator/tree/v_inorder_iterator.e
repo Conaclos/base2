@@ -23,7 +23,7 @@ feature -- Cursor movement
 				from
 					go_root
 				until
-					active.left = Void
+					attached_active.left = Void
 				loop
 					left
 				end
@@ -43,7 +43,7 @@ feature -- Cursor movement
 				from
 					go_root
 				until
-					active.right = Void
+					attached_active.right = Void
 				loop
 					right
 				end
@@ -58,18 +58,18 @@ feature -- Cursor movement
 		note
 			modify: path, after
 		do
-			if active.right /= Void then
+			if attached_active.right /= Void then
 				right
 				from
 				until
-					active.left = Void
+					attached_active.left = Void
 				loop
 					left
 				end
 			else
 				from
 				until
-					active.is_root or active.is_left
+					attached_active.is_root or attached_active.is_left
 				loop
 					up
 				end
@@ -85,18 +85,18 @@ feature -- Cursor movement
 		note
 			modify: path, after
 		do
-			if active.left /= Void then
+			if attached_active.left /= Void then
 				left
 				from
 				until
-					active.right = Void
+					attached_active.right = Void
 				loop
 					right
 				end
 			else
 				from
 				until
-					active.is_root or active.is_right
+					attached_active.is_root or attached_active.is_right
 				loop
 					up
 				end
@@ -121,4 +121,5 @@ feature -- Specification
 			definition_step: target.map.domain [root] implies
 				Result |=| (subtree_path_sequence (root & False) & root + subtree_path_sequence (root & True))
 		end
+
 end

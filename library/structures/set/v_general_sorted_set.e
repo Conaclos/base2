@@ -80,7 +80,9 @@ feature -- Search
 	item (v: G): G
 			-- Element of `set' equivalent to `v' according to `relation'.
 		do
-			Result := cell_equivalent (v).item
+			check attached cell_equivalent (v) as l_cell then
+				Result := l_cell.item
+			end
 		end
 
 	order: PREDICATE [ANY, TUPLE [G, G]]

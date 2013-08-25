@@ -142,6 +142,17 @@ feature {V_ITERATOR} -- Cursor movement
 
 feature {NONE} -- Implementation
 
+	attached_parent: V_BINARY_TREE_CELL [G]
+			-- Active parent
+		require
+			not_off: not off
+			active_not_is_root: not attached_active.is_root
+		do
+			check attached attached_active.parent as l_parent then
+				Result := l_parent
+			end
+		end
+
 	active_index: INTEGER
 			-- Index of `active' in inorder.
 			-- 0 if `active' is not part of the tree.

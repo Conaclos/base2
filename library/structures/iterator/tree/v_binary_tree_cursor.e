@@ -64,7 +64,7 @@ feature -- Status report
 		require
 			not_off: not off
 		do
-			Result := active.is_leaf
+			Result := attached_active.is_leaf
 		ensure
 			definition: Result = (not map.domain [path & True] and not map.domain [path & False])
 		end
@@ -74,7 +74,7 @@ feature -- Status report
 		require
 			not_off: not off
 		do
-			Result := active.left /= Void
+			Result := attached_active.left /= Void
 		ensure
 			definition: Result = map.domain [path & False]
 		end
@@ -84,7 +84,7 @@ feature -- Status report
 		require
 			no_off: not off
 		do
-			Result := active.right /= Void
+			Result := attached_active.right /= Void
 		ensure
 			definition: Result = map.domain [path & True]
 		end
@@ -109,7 +109,7 @@ feature -- Cursor movement
 		require
 			not_off: not off
 		do
-			active := active.parent
+			active := attached_active.parent
 		ensure
 			path_effect: path |=| old path.but_last
 		end
@@ -121,7 +121,7 @@ feature -- Cursor movement
 		require
 			not_off: not off
 		do
-			active := active.left
+			active := attached_active.left
 		ensure
 			path_effect_not_off: old (map.domain [path & False]) implies path |=| old (path & False)
 			path_effect_off: not old (map.domain [path & False]) implies path.is_empty
@@ -134,7 +134,7 @@ feature -- Cursor movement
 		require
 			not_off: not off
 		do
-			active := active.right
+			active := attached_active.right
 		ensure
 			path_effect_not_off: old (map.domain [path & True]) implies path |=| old (path & True)
 			path_effect_off: not old (map.domain [path & True]) implies path.is_empty
@@ -161,9 +161,7 @@ feature -- Extension
 			not_off: not off
 			not_has_left: not has_left
 		do
-			check attached active as l_active then
-				target.extend_left (v, l_active)
-			end
+			target.extend_left (v, attached_active)
 		ensure
 			map_effect: map |=| old map.updated (path & False, v)
 		end
@@ -176,9 +174,7 @@ feature -- Extension
 			not_off: not off
 			not_has_right: not has_right
 		do
-			check attached active as l_active then
-				target.extend_right (v, l_active)
-			end
+			target.extend_right (v, attached_active)
 		ensure
 			map_effect: map |=| old map.updated (path & True, v)
 		end
@@ -193,9 +189,7 @@ feature -- Removal
 			not_off: not off
 			not_two_children: not has_left or not has_right
 		do
-			check attached active as l_active then
-				target.remove (l_active)
-			end
+			target.remove (attached_active)
 			active := Void
 		ensure
 			map_domain_effect: map.domain |=| old (

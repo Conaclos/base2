@@ -162,16 +162,17 @@ feature {V_BINARY_TREE_CURSOR} -- Implementation
 			else
 				child := cell.right
 			end
-			if cell.is_root then
+			if attached cell.parent as l_cell_parent then
+				if cell.is_left then
+					l_cell_parent.connect_left_child (child)
+				else
+					l_cell_parent.connect_right_child (child)
+				end
+			else
+				check cell.is_root end
 				root := child
 				if child /= Void then
 					child.put_parent (Void)
-				end
-			else
-				if cell.is_left then
-					cell.parent.connect_left_child (child)
-				else
-					cell.parent.connect_right_child (child)
 				end
 			end
 			count := count - 1

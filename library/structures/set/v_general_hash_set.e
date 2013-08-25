@@ -89,7 +89,9 @@ feature -- Search
 	item (v: G): G
 			-- Element of `set' equivalent to `v' according to `relation'.
 		do
-			Result := buckets [index (v)].cell_satisfying (agent equivalent (v, ?)).item
+			check attached buckets [index (v)].cell_satisfying (agent equivalent (v, ?)) as l_cell then
+				Result := l_cell.item
+			end
 		end
 
 	equivalence: PREDICATE [ANY, TUPLE [G, G]]
