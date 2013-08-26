@@ -54,8 +54,8 @@ feature {V_CELL_CURSOR} -- Implementation
 		require
 			not_off: not off
 		do
-			check attached active as l_active then
-				Result := l_active
+			check attached active as cl_active then
+				Result := cl_active
 			end
 		end
 

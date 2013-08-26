@@ -45,7 +45,7 @@ feature {NONE} -- Initialization
 --			create set.make (agent (kv1, kv2: TUPLE [key: K; value: V]; key_o: PREDICATE [ANY, TUPLE [K, K]]): BOOLEAN
 --					do
 --						Result := key_o.item ([kv1.key, kv2.key])
---					end (?, ?, o))  -- Waiting Targeted expressions adoption
+--					end (?, ?, o)) -- Waiting Targeted expressions adoption
 			create set.make (agent (create {V_TABLE_UTILITY [K, V]}).keys_comparison (?, ?, o))
 		ensure
 			map_effect: map.is_empty

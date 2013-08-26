@@ -55,7 +55,7 @@ feature {NONE} -- Initialization
 --				agent (kv: TUPLE [key: K; value: V]; key_h: FUNCTION [ANY, TUPLE [K], INTEGER]): INTEGER
 --					do
 --						Result := key_h.item ([kv.key])
---					end (?, h))  -- Waiting Targeted expressions adoption
+--					end (?, h)) -- Waiting Targeted expressions adoption
 
 			create set.make (
 				agent (create {V_TABLE_UTILITY [K, V]}).keys_comparison (?, ?, eq),

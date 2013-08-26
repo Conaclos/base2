@@ -148,8 +148,8 @@ feature {NONE} -- Implementation
 			not_off: not off
 			active_not_is_root: not attached_active.is_root
 		do
-			check attached attached_active.parent as l_parent then
-				Result := l_parent
+			check attached attached_active.parent as cl_parent then
+				Result := cl_parent
 			end
 		end
 
