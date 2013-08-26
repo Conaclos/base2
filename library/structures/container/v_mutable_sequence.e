@@ -138,7 +138,7 @@ feature -- Replacement
 						Result := map [i] = other_map [i - f + of]
 					end (?, old other.map, index, other_first))
 			map_unchanged_effect: (map | (map.domain - (create {MML_INTERVAL}.from_tuple ([index, index + other_last - other_first])))) |=|
-				old (map | (map.domain - (map.domain - (create {MML_INTERVAL}.from_tuple ([index, index + other_last - other_first])))))
+				old (map | (map.domain - (create {MML_INTERVAL}.from_tuple ([index, index + other_last - other_first]))))
 		end
 
 	sort (order: PREDICATE [ANY, TUPLE [G, G]])
