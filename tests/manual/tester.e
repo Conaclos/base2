@@ -13,6 +13,9 @@ feature {NONE} -- Initialization
 	execute
 			-- Run application.
 		do
+			print ("%NTest SORTED_SET%N")
+			test_sorted_set
+			io.new_line
 			test_optimization
 			print ("%NTest MML_SET%N")
 			test_mml_set
@@ -36,9 +39,6 @@ feature {NONE} -- Initialization
 			io.new_line
 			print ("%NTest BINARY_TREE%N")
 			test_binary_tree
-			io.new_line
-			print ("%NTest SORTED_SET%N")
-			test_sorted_set
 			io.new_line
 			print ("%NTest SORTED_TABLE%N")
 			test_sorted_table
@@ -849,7 +849,6 @@ feature -- MML tests
 			-- Test MML_RELATION
 		local
 			r: MML_RELATION [INTEGER, INTEGER]
-			b: BOOLEAN
 		do
 			create r.singleton (1, 2)
 			r := r.extended (2, 3).extended (1, 4).extended (1, 2)
@@ -862,7 +861,7 @@ feature -- Performance tests
 	test_optimization
 			-- Test MBC optimazation performance
 		local
-			start, finish, dur: TIME
+			start, finish: TIME
 			i, n: INTEGER
 		do
 			n := 100
