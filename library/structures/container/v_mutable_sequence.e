@@ -81,8 +81,8 @@ feature -- Replacement
 			end
 		ensure
 			map_domain_effect: map.domain |=| old map.domain
-			map_changed_effect: (map | (create {MML_INTERVAL}.from_tuple ([l, u]))).is_constant (v)
-			map_unchanged_effect: (map | (map.domain - (create {MML_INTERVAL}.from_tuple ([l, u])))) |=| old (map | (map.domain - ( create {MML_INTERVAL}.from_tuple ([l, u]))))
+			map_changed_effect: (map | (create {MML_INTERVAL}.from_range (l, u))).is_constant (v)
+			map_unchanged_effect: (map | (map.domain - (create {MML_INTERVAL}.from_range (l, u)))) |=| old (map | (map.domain - ( create {MML_INTERVAL}.from_range (l, u))))
 		end
 
 	clear (l, u: INTEGER)
@@ -97,8 +97,8 @@ feature -- Replacement
 			fill (({G}).default, l, u)
 		ensure
 			map_domain_effect: map.domain |=| old map.domain
-			map_changed_effect: (map | (create {MML_INTERVAL}.from_tuple ([l, u]))).is_constant (({G}).default)
-			map_unchanged_effect: (map | (map.domain - (create {MML_INTERVAL}.from_tuple ([l, u])))) |=| old (map | (map.domain - (create {MML_INTERVAL}.from_tuple ([l, u]))))
+			map_changed_effect: (map | (create {MML_INTERVAL}.from_range (l, u))).is_constant (({G}).default)
+			map_unchanged_effect: (map | (map.domain - (create {MML_INTERVAL}.from_range (l, u)))) |=| old (map | (map.domain - (create {MML_INTERVAL}.from_range (l, u))))
 		end
 
 	copy_range (other: V_SEQUENCE [G]; other_first, other_last, index: INTEGER)

@@ -42,7 +42,7 @@ feature {NONE} -- Initialization
 			end
 			create area.make_filled (({G}).default, upper - lower + 1)
 		ensure
-			map_domain_effect: map.domain |=| (create {MML_INTERVAL}.from_tuple ([l, u]))
+			map_domain_effect: map.domain |=| (create {MML_INTERVAL}.from_range (l, u))
 			map_effect: map.is_constant (({G}).default)
 		end
 
@@ -60,7 +60,7 @@ feature {NONE} -- Initialization
 			end
 			create area.make_filled (v, u - l + 1)
 		ensure
-			map_domain_effect: map.domain |=| (create {MML_INTERVAL}.from_tuple ([l, u]))
+			map_domain_effect: map.domain |=| (create {MML_INTERVAL}.from_range (l, u))
 			map_effect: map.is_constant (v)
 		end
 
@@ -103,7 +103,7 @@ feature -- Access
 			create Result.make (l, u)
 			Result.copy_range (Current, l, u, Result.lower)
 		ensure
-			map_domain_definition: Result.map.domain |=| (create {MML_INTERVAL}.from_tuple ([l, u]))
+			map_domain_definition: Result.map.domain |=| (create {MML_INTERVAL}.from_range (l, u))
 			map_definition: Result.map.for_all (agent (i: INTEGER; x: G): BOOLEAN
 				do
 					Result := x = map [i]
@@ -213,7 +213,7 @@ feature -- Resizing
 				upper := u
 			end
 		ensure
-			map_domain_effect: map.domain |=| (create {MML_INTERVAL}.from_tuple ([l, u]))
+			map_domain_effect: map.domain |=| (create {MML_INTERVAL}.from_range (l, u))
 			map_old_effect: (map | (map.domain * old map.domain)) |=| (old map | (map.domain * old map.domain))
 			map_new_effect: (map | (map.domain - old map.domain)).is_constant (({G}).default)
 		end

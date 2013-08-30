@@ -35,7 +35,7 @@ feature {NONE} -- Initialization
 			equivalence := eq
 			hash := h
 			buckets := empty_buckets (default_capacity)
-			-- create iterator.make (Current) -- replaced with self-initializing attribute waiting Targeted expressions adoption
+			create iterator.make (Current)
 		ensure
 			set_effect: set.is_empty
 			--- equivalence_effect: equivalence |=| eq
@@ -194,9 +194,6 @@ feature {NONE} -- Implementation
 
 	iterator: V_HASH_SET_ITERATOR [G]
 			-- Internal iterator.
-		attribute
-			create Result.make (Current)
-		end
 
 	bucket_index (v: G; n: INTEGER): INTEGER
 			-- Index of `v' into in a bucket array of size `n'.
