@@ -1,5 +1,4 @@
 Structures:
-
 - Relax preconditons of forth/back and extend_left/right?
 - V_SET: weaker contracts for extend and remove (only require sets to be the same up to equivalence)
 - Tree nodes should not have parent pointers? (less consistentcy problems,
@@ -10,7 +9,6 @@ more sharing possible)
 - V_STRING, V_MUTABLE_STRING
 
 MML:
-
 - Add contracts to model classes
 - Add disjoint union to sets
 - Carlo's convention for sequence indexing?
@@ -21,7 +19,6 @@ Overall:
 - Void safety?
 
 Disadvantages of agents vs. infinite models
-
 - Had to introduce "filtered" instead of "intersection" with infinite set
 (but user interface is better)
 - Cannot express an image of a finite set under infinite map
@@ -29,5 +26,16 @@ Disadvantages of agents vs. infinite models
 - Cannot have "compliment" for sets and relations 
 
 Known bugs:
-
 - Search doesn't work properly if model objects put inside data structures (wrong meaning of the postcondition)
+
+
+Proposals:
+- {MML_BAG}.extended_multiple
+Enforce precondition to n_positive: n > 0
+The condition can be then removed.
+- {MML_BAG}.removed_multiple
+Enforce precondition to n_positive: n > 0
+The condition can be simpler.
+
+- MML classes: Replace V_ARRAY with V_SEQUENCE for a readable access and make immutable interface.
+It suggests to have a creation command in V_ARRAY having a V_SEQUENCE or an ancestor as argument.
